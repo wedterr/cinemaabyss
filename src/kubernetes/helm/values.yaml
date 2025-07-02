@@ -5,7 +5,7 @@ global:
 
 # Image pull secrets
 imagePullSecrets:
-  dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaGNyLmlvIjogewoJCQkiYXV0aCI6
+  dockerconfigjson: ew0KCSJhdXRocyI6IHsNCgkJImdoY3IuaW8iOiB7DQogICAgICAgICAgICAiYXV0aCI6ICJkMlZrZEdWeWNqcG5hSEJmZEVkYVZtUm1NMkpXWmtsNWVVVmxkbGt4UzBONGQwcG5UMnRvZFhORU5GVkthRVpTIg0KICAgICAgICB9DQoJfQ0KfQ==
 # Database configuration
 database:
   host: postgres
@@ -65,7 +65,7 @@ proxyService:
       cpu: 100m
       memory: 128Mi
   service:
-    port: 80
+    port: 8000
     targetPort: 8000
     type: ClusterIP
 
