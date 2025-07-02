@@ -1,0 +1,46 @@
+@startuml
+title CinemaAbyss Container Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "User", "A user of the CinemaAbyss")
+System(CinemaAbyssSystem, "CinemaAbyss System", "Cinema Abyss movies steaming service")
+System_Ext(OnlineCinema, "Online Cinema services", "External cinema services")
+
+Container_Boundary(CinemaAbyssSystem, "CinemaAbyss System") {
+  Container(APIGateway, "Proxy Service", "Go, API Gateway", "Combine the system as a single unit for users")
+  Container(UsersService, "Users service", "Go", "Manage users for the system - access, info etc.")
+  Container(MoviesService, "Movies service", "Go", "Handles the movies, metadata, ratings, genres.")
+  Container(PaymentsService, "Payments service", "Go", "Handles payments.")
+  Container(SubscriptionsService, "Subscriptions service", "Go", "Handles subscriptions.")
+
+  Container(MessageBroker, "Message Broker", "Kafka", "Event messaging")
+  Container(UsersDatabase, "UsersDB", "PostgreSQL", "Users data")
+  Container(SubscriptionsDatabase, "SubscriptionsDB", "PostgreSQL", "Subscriptions data")
+  Container(MoviesDatabase, "MoviesDB", "PostgreSQL", "Movies data")
+}
+
+
+Rel(user, APIGateway, "Uses the system")
+Rel(APIGateway, UsersService, "Authorize/authenticate user")
+
+Rel(UsersService, SubscriptionsService, "Check subscriptions")
+Rel(UsersService, MessageBroker, "Add/remove subscriptions command")
+Rel(MessageBroker, SubscriptionsService, "Listen add/remove subscriptions events")
+
+Rel(APIGateway, MoviesService, "Rate/search movies")
+Rel(MessageBroker, APIGateway, "Recieve movies stream")
+Rel(MoviesService, MessageBroker, "Stream movies")
+Rel(MoviesService, OnlineCinema, "Get movies stream")
+Rel(OnlineCinema, MoviesService, "Stream movies")
+
+Rel(MoviesService, SubscriptionsService, "Check subscriptions")
+Rel(SubscriptionsService, PaymentsService, "Process payments")
+
+Rel(UsersService, UsersDatabase, "Store users")
+Rel(MoviesService, MoviesDatabase, "Store Movies info")
+Rel(SubscriptionsService, SubscriptionsDatabase, "Store Subscriptions")
+
+@enduml

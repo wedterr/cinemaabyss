@@ -1,0 +1,339 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: support@cinemaabyss.com
+    name: CinemaAbyss Team
+  description: |
+    API спецификация для системы CinemaAbyss, включающая монолит и микросервисы.
+
+    Система CinemaAbyss представляет собой платформу для управления фильмами, пользователями, платежами и подписками.
+    Архитектура системы включает монолитное приложение и выделенные микросервисы.
+  title: CinemaAbyss Events API
+  version: 1.0.0
+servers:
+- description: Микросервис событий
+  url: http://localhost:8082
+tags:
+- description: Операции с событиями
+  name: events
+paths:
+  /api/events/health:
+    get:
+      description: Возвращает статус работоспособности микросервиса событий
+      operationId: getEventsServiceHealth
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getEventsServiceHealth_200_response"
+          description: Успешный ответ
+      summary: Проверка работоспособности микросервиса событий
+      tags:
+      - health
+  /api/events/movie:
+    post:
+      description: "Регистрирует новое событие, связанное с фильмом"
+      operationId: createMovieEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovieEvent"
+        description: Данные события фильма
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventResponse"
+          description: Событие успешно создано
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Некорректный запрос
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Внутренняя ошибка сервера
+      summary: Создание события фильма
+      tags:
+      - events
+  /api/events/user:
+    post:
+      description: "Регистрирует новое событие, связанное с пользователем"
+      operationId: createUserEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserEvent"
+        description: Данные события пользователя
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventResponse"
+          description: Событие успешно создано
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Некорректный запрос
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Внутренняя ошибка сервера
+      summary: Создание события пользователя
+      tags:
+      - events
+  /api/events/payment:
+    post:
+      description: "Регистрирует новое событие, связанное с платежом"
+      operationId: createPaymentEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentEvent"
+        description: Данные события платежа
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventResponse"
+          description: Событие успешно создано
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Некорректный запрос
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Внутренняя ошибка сервера
+      summary: Создание события платежа
+      tags:
+      - events
+components:
+  schemas:
+    Event:
+      example:
+        payload: "{}"
+        id: movie-1-viewed
+        type: movie
+        timestamp: 2023-01-15T14:30:00Z
+      properties:
+        id:
+          description: Уникальный идентификатор события
+          example: movie-1-viewed
+          type: string
+        type:
+          description: Тип события
+          example: movie
+          type: string
+        timestamp:
+          description: Время события
+          example: 2023-01-15T14:30:00Z
+          format: date-time
+          type: string
+        payload:
+          description: Полезная нагрузка события (зависит от типа события)
+          type: object
+      required:
+      - id
+      - payload
+      - timestamp
+      - type
+      type: object
+    MovieEvent:
+      example:
+        user_id: 1
+        genres:
+        - Sci-Fi
+        - Action
+        rating: 8.5
+        action: viewed
+        description: A mind-bending thriller
+        movie_id: 1
+        title: Inception
+      properties:
+        movie_id:
+          description: Идентификатор фильма
+          example: 1
+          type: integer
+        title:
+          description: Название фильма
+          example: Inception
+          type: string
+        action:
+          description: Действие с фильмом
+          example: viewed
+          type: string
+        user_id:
+          description: Идентификатор пользователя (опционально)
+          example: 1
+          type: integer
+        rating:
+          description: Рейтинг (опционально)
+          example: 8.5
+          format: float
+          type: number
+        genres:
+          description: Жанры фильма (опционально)
+          example:
+          - Sci-Fi
+          - Action
+          items:
+            type: string
+          type: array
+        description:
+          description: Описание фильма (опционально)
+          example: A mind-bending thriller
+          type: string
+      required:
+      - action
+      - movie_id
+      - title
+      type: object
+    UserEvent:
+      example:
+        user_id: 1
+        action: registered
+        email: john.doe@example.com
+        username: john_doe
+        timestamp: 2023-01-15T14:30:00Z
+      properties:
+        user_id:
+          description: Идентификатор пользователя
+          example: 1
+          type: integer
+        username:
+          description: Имя пользователя (опционально)
+          example: john_doe
+          type: string
+        email:
+          description: Email пользователя (опционально)
+          example: john.doe@example.com
+          type: string
+        action:
+          description: Действие пользователя
+          example: registered
+          type: string
+        timestamp:
+          description: Время события
+          example: 2023-01-15T14:30:00Z
+          format: date-time
+          type: string
+      required:
+      - action
+      - timestamp
+      - user_id
+      type: object
+    PaymentEvent:
+      example:
+        amount: 9.99
+        user_id: 1
+        payment_id: 1
+        method_type: credit_card
+        status: completed
+        timestamp: 2023-01-15T14:30:00Z
+      properties:
+        payment_id:
+          description: Идентификатор платежа
+          example: 1
+          type: integer
+        user_id:
+          description: Идентификатор пользователя
+          example: 1
+          type: integer
+        amount:
+          description: Сумма платежа
+          example: 9.99
+          format: float
+          type: number
+        status:
+          description: Статус платежа
+          example: completed
+          type: string
+        timestamp:
+          description: Время платежа
+          example: 2023-01-15T14:30:00Z
+          format: date-time
+          type: string
+        method_type:
+          description: Тип метода оплаты (опционально)
+          example: credit_card
+          type: string
+      required:
+      - amount
+      - payment_id
+      - status
+      - timestamp
+      - user_id
+      type: object
+    EventResponse:
+      example:
+        partition: 0
+        offset: 42
+        event:
+          payload: "{}"
+          id: movie-1-viewed
+          type: movie
+          timestamp: 2023-01-15T14:30:00Z
+        status: success
+      properties:
+        status:
+          description: Статус операции
+          example: success
+          type: string
+        partition:
+          description: Партиция Kafka
+          example: 0
+          type: integer
+        offset:
+          description: Смещение в партиции Kafka
+          example: 42
+          type: integer
+        event:
+          $ref: "#/components/schemas/Event"
+      required:
+      - event
+      - offset
+      - partition
+      - status
+      type: object
+    Error:
+      example:
+        error: Internal Server Error
+      properties:
+        error:
+          description: Сообщение об ошибке
+          example: Internal Server Error
+          type: string
+      required:
+      - error
+      type: object
+    getEventsServiceHealth_200_response:
+      example:
+        status: true
+      properties:
+        status:
+          example: true
+          type: boolean
+      type: object

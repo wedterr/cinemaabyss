@@ -1,0 +1,17 @@
+.docs/api/openapi.yaml
+.openapi-generator-ignore
+Dockerfile
+README.md
+go.mod
+handlers/api_events.go
+handlers/api_health.go
+handlers/container.go
+main.go
+models/hello-world.go
+models/model_error.go
+models/model_event.go
+models/model_event_response.go
+models/model_get_events_service_health_200_response.go
+models/model_movie_event.go
+models/model_payment_event.go
+models/model_user_event.go
