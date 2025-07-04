@@ -10,6 +10,9 @@ System(CinemaAbyssSystem, "CinemaAbyss System", "Cinema Abyss movies steaming se
 System_Ext(OnlineCinema, "Online Cinema services", "External cinema services")
 
 Container_Boundary(CinemaAbyssSystem, "CinemaAbyss System") {
+  Container(DNS, "CDN", "CDN Server", "Server to identify geo ip")
+  Container(Proxy, "Proxy Services 2,...,N", "Go, API Gateway", "Combine the system as a single unit for users")
+
   Container(APIGateway, "Proxy Service", "Go, API Gateway", "Combine the system as a single unit for users")
   Container(UsersService, "Users service", "Go", "Manage users for the system - access, info etc.")
   Container(MoviesService, "Movies service", "Go", "Handles the movies, metadata, ratings, genres.")
@@ -23,7 +26,9 @@ Container_Boundary(CinemaAbyssSystem, "CinemaAbyss System") {
 }
 
 
-Rel(user, APIGateway, "Uses the system")
+Rel(user, DNS, "Uses the system")
+Rel(DNS, APIGateway, "Identify geo ip to route user")
+Rel(DNS, Proxy, "Identify geo ip to route user")
 Rel(APIGateway, UsersService, "Authorize/authenticate user")
 
 Rel(UsersService, SubscriptionsService, "Check subscriptions")
