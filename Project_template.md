@@ -59,13 +59,11 @@
 Необходимые тесты для проверки этого API вызываются при запуске npm run test:local из папки tests/postman 
 Приложите скриншот тестов и скриншот состояния топиков Kafka http://localhost:8090 
 
-![alt text](image-7.png)
-![alt text](image-6.png)
-![alt text](image-4.png)
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
+![alt text](./images/image-4.png)
+![alt text](./images/image.png)
+![alt text](./images/image-1.png)
+![alt text](./images/image-2.png)
+![alt text](./images/image-3.png)
 ## Задание 3
 
 Команда начала переезд в Kubernetes для лучшего масштабирования и повышения надежности. 
@@ -280,8 +278,8 @@ cat .docker/config.json | base64
 #### Шаг 3
 Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
 
-![alt text](image-9.png)
-![alt text](image-5.png)
+![alt text](./images/image-9.png)
+![alt text](./images/image-5.png)
 
 ## Задание 4
 Для простоты дальнейшего обновления и развертывания вам как архитектуру необходимо так же реализовать helm-чарты для прокси-сервиса и проверить работу 
@@ -357,9 +355,9 @@ minikube tunnel
 https://cinemaabyss.example.com/api/movies
 и приложите скриншот развертывания helm и вывода https://cinemaabyss.example.com/api/movies
 
-![alt text](image-10.png)
-![alt text](image-12.png)
-![alt text](image-11.png)
+![alt text](./images/image-10.png)
+![alt text](./images/image-12.png)
+![alt text](./images/image-14.png)
 
 
 # Задание 5
@@ -426,7 +424,7 @@ You can see 21 for the upstream_rq_pending_overflow value which means 21 calls s
 ```
 
 Приложите скриншот работы circuit breaker'а
-![alt text](image-13.png)
+![alt text](./images/image-13.png)
 
 Удаляем все
 ```bash

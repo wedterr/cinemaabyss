@@ -65,7 +65,7 @@ proxyService:
       cpu: 100m
       memory: 128Mi
   service:
-    port: 8000
+    port: 80
     targetPort: 8000
     type: ClusterIP
 
@@ -183,3 +183,4 @@ config:
   # Strangler Fig configuration
   gradualMigration: "true"
   moviesMigrationPercent: "100"
+  kafkaBrokers: "kafka:9092"
